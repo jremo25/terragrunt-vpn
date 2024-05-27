@@ -14,14 +14,14 @@ variable "config" {
 }
 
 ############
-variable "peer_ip" {
-  type = string
-}
+# variable "peer_ip" {
+#   type = string
+# }
 
-variable "local_traffic_selector" {
-  type = list(string)
-}
+# variable "local_traffic_selector" {
+#   type = list(string)
+# }
 
-variable "remote_traffic_selector" {
-  type = list(string)
-}
+# variable "remote_traffic_selector" {
+#   type = list(string)
+# }

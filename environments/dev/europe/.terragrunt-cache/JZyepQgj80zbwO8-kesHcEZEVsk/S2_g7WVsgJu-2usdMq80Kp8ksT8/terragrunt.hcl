@@ -27,7 +27,7 @@ inputs = {
     tags           = ["europe-http-server"]
   }
 
-  peer_ip                 = "35.189.146.190"
+  peer_ip                 = "34.84.169.158"
   local_traffic_selector  = ["10.150.11.0/24"]
   remote_traffic_selector = ["192.168.11.0/24"]
 }

@@ -86,57 +86,57 @@ resource "google_compute_address" "europe_vpn_ip" {
 }
 
 ###################
-resource "google_compute_vpn_tunnel" "europe_vpn_tunnel" {
-  name               = "europe-to-asia-tunnel"
-  region             = var.config.region
-  target_vpn_gateway = google_compute_vpn_gateway.europe_vpn_gateway.id
-  peer_ip            = var.peer_ip
-  shared_secret      = data.google_secret_manager_secret_version.vpn_secret.secret_data
-  ike_version        = 2
+# resource "google_compute_vpn_tunnel" "europe_vpn_tunnel" {
+#   name               = "europe-to-asia-tunnel"
+#   region             = var.config.region
+#   target_vpn_gateway = google_compute_vpn_gateway.europe_vpn_gateway.id
+#   peer_ip            = var.peer_ip
+#   shared_secret      = data.google_secret_manager_secret_version.vpn_secret.secret_data
+#   ike_version        = 2
 
-  local_traffic_selector  = var.local_traffic_selector
-  remote_traffic_selector = var.remote_traffic_selector
+#   local_traffic_selector  = var.local_traffic_selector
+#   remote_traffic_selector = var.remote_traffic_selector
 
-  depends_on = [
-    google_compute_forwarding_rule.esp,
-    google_compute_forwarding_rule.udp500,
-    google_compute_forwarding_rule.udp4500
-  ]
-}
+#   depends_on = [
+#     google_compute_forwarding_rule.esp,
+#     google_compute_forwarding_rule.udp500,
+#     google_compute_forwarding_rule.udp4500
+#   ]
+# }
 
-resource "google_compute_route" "europe_vpn_route" {
-  name                = "europe-to-asia-route"
-  network             = google_compute_network.europe_network.id
-  dest_range          = var.remote_traffic_selector[0]
-  next_hop_vpn_tunnel = google_compute_vpn_tunnel.europe_vpn_tunnel.id
-  priority            = 1000
-}
+# resource "google_compute_route" "europe_vpn_route" {
+#   name                = "europe-to-asia-route"
+#   network             = google_compute_network.europe_network.id
+#   dest_range          = var.remote_traffic_selector[0]
+#   next_hop_vpn_tunnel = google_compute_vpn_tunnel.europe_vpn_tunnel.id
+#   priority            = 1000
+# }
 
-resource "google_compute_forwarding_rule" "esp" {
-  name        = "europe-vpn-esp"
-  region      = var.config.region
-  ip_protocol = "ESP"
-  ip_address  = google_compute_address.europe_vpn_ip.address
-  target      = google_compute_vpn_gateway.europe_vpn_gateway.self_link
-}
+# resource "google_compute_forwarding_rule" "esp" {
+#   name        = "europe-vpn-esp"
+#   region      = var.config.region
+#   ip_protocol = "ESP"
+#   ip_address  = google_compute_address.europe_vpn_ip.address
+#   target      = google_compute_vpn_gateway.europe_vpn_gateway.self_link
+# }
 
-resource "google_compute_forwarding_rule" "udp500" {
-  name        = "europe-vpn-udp500"
-  region      = var.config.region
-  ip_protocol = "UDP"
-  ip_address  = google_compute_address.europe_vpn_ip.address
-  port_range  = "500"
-  target      = google_compute_vpn_gateway.europe_vpn_gateway.self_link
-}
+# resource "google_compute_forwarding_rule" "udp500" {
+#   name        = "europe-vpn-udp500"
+#   region      = var.config.region
+#   ip_protocol = "UDP"
+#   ip_address  = google_compute_address.europe_vpn_ip.address
+#   port_range  = "500"
+#   target      = google_compute_vpn_gateway.europe_vpn_gateway.self_link
+# }
 
-resource "google_compute_forwarding_rule" "udp4500" {
-  name        = "europe-vpn-udp4500"
-  region      = var.config.region
-  ip_protocol = "UDP"
-  ip_address  = google_compute_address.europe_vpn_ip.address
-  port_range  = "4500"
-  target      = google_compute_vpn_gateway.europe_vpn_gateway.self_link
-}
+# resource "google_compute_forwarding_rule" "udp4500" {
+#   name        = "europe-vpn-udp4500"
+#   region      = var.config.region
+#   ip_protocol = "UDP"
+#   ip_address  = google_compute_address.europe_vpn_ip.address
+#   port_range  = "4500"
+#   target      = google_compute_vpn_gateway.europe_vpn_gateway.self_link
+# }
 
 output "europe_vpn_ip_address" {
   value = google_compute_address.europe_vpn_ip.address

@@ -8,5 +8,11 @@
 # Ignore .terraform directories
 **/.terraform/*
 
+# Ignore Terragrunt cache
+**/.terragrunt-cache/*
+
 # Ignore executable files
 *.exe
+
+# Ignore local environment files
+.env
